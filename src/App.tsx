@@ -23,13 +23,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         
-        {/* Public routes — inaccessible when logged in */}
         <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
         <Route path="/forgot-password" element={<PublicRoute><ForgotPasswordPage /></PublicRoute>} />
         <Route path="/reset-password" element={<PublicRoute><ResetPasswordPage /></PublicRoute>} />
 
-        {/* Protected routes — require authentication */}
         <Route path="/" element={<ProtectedRoutes><DashboardPage /></ProtectedRoutes>}>
           <Route path="dashboard" element={<SeriesList />} />
           <Route path="library"   element={<SeriesList />} />
@@ -41,7 +39,6 @@ export default function App() {
           <Route path="admin" element={<ProtectedRoutes roles={["admin"]}><AdminPage /></ProtectedRoutes>} />
         </Route>
 
-        {/* Catch-all 404 Route */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

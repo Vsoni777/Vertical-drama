@@ -103,7 +103,6 @@ export default function MembershipPage() {
       </p>
 
       <section className="plan-grid">
-        {/* Subscription card */}
         <article className="plan-card featured">
           <span className="plan-badge">BEST VALUE</span>
           <h2>Vivid Plus</h2>
@@ -147,7 +146,6 @@ export default function MembershipPage() {
           )}
         </article>
 
-        {/* Coin card */}
         <article className="plan-card">
           <p className="eyebrow">COIN BALANCE</p>
           <h2>◉ {viewer.coins}</h2>

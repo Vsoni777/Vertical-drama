@@ -12,7 +12,8 @@ export const getMe = () =>
     };
   }>("/api/v1/me");
 
-export const getSubscription = () => api.get("/api/v1/subscription");
+export const getSubscription = () => api.get("/api/v1/subscriptions");
+
 export const createSubscription = (plan: string) =>
   api.post<{
     data: {
@@ -20,8 +21,9 @@ export const createSubscription = (plan: string) =>
       mode?: "stripe" | "dev";
       subscription?: { plan: string; status: string; active: boolean; ends_at?: string };
     };
-  }>("/api/v1/subscription/checkout", { plan });
-export const cancelSubscription = () => api.delete("/api/v1/subscription");
+  }>("/api/v1/subscriptions/checkout", { plan });
+
+export const cancelSubscription = () => api.delete("/api/v1/subscriptions");
 
 export const getCoinBalance = () => api.get("/api/v1/coins");
 export const purchaseCoins = (pack: "small" | "medium" | "large") =>
