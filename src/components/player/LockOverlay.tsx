@@ -9,17 +9,8 @@ interface Props {
   onSubscribe: () => void;
 }
 
-export default function LockOverlay({
-  episode,
-  viewer,
-  unlocking,
-  onUnlock,
-  onSubscribe,
-}: Props) {
-  const cost =
-    episode.coin_cost ??
-    episode.coinCost ??
-    0;
+export default function LockOverlay({ episode, viewer, unlocking, onUnlock, onSubscribe, }: Props) {
+  const cost = episode.coin_cost ?? episode.coinCost ?? 0;
 
   return (
     <div className="reel-locked-overlay">

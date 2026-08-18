@@ -42,13 +42,13 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading]       = useState(Boolean(token));
 
   const [savedIds, setSavedIds]     = useState<number[]>(() => {
-    try { return JSON.parse(localStorage.getItem("vivid-saved") || "[]") as number[]; } catch { return []; }
+    try { return JSON.parse(sessionStorage.getItem("vivid-saved") || "[]") as number[]; } catch { return []; }
   });
   const [unlockedIds, setUnlockedIds] = useState<number[]>(() => {
-    try { return JSON.parse(localStorage.getItem("vivid-unlocked") || "[]") as number[]; } catch { return []; }
+    try { return JSON.parse(sessionStorage.getItem("vivid-unlocked") || "[]") as number[]; } catch { return []; }
   });
   const [progress, setProgress]     = useState<Record<string, number>>(() => {
-    try { return JSON.parse(localStorage.getItem("vivid-progress") || "{}") as Record<string, number>; } catch { return {}; }
+    try { return JSON.parse(sessionStorage.getItem("vivid-progress") || "{}") as Record<string, number>; } catch { return {}; }
   });
 
   const fetchMe = useCallback(async () => {
@@ -84,9 +84,9 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => { void fetchMe(); }, [fetchMe]);
 
-  useEffect(() => localStorage.setItem("vivid-saved",    JSON.stringify(savedIds)),    [savedIds]);
-  useEffect(() => localStorage.setItem("vivid-unlocked", JSON.stringify(unlockedIds)), [unlockedIds]);
-  useEffect(() => localStorage.setItem("vivid-progress", JSON.stringify(progress)),    [progress]);
+  useEffect(() => sessionStorage.setItem("vivid-saved",    JSON.stringify(savedIds)),    [savedIds]);
+  useEffect(() => sessionStorage.setItem("vivid-unlocked", JSON.stringify(unlockedIds)), [unlockedIds]);
+  useEffect(() => sessionStorage.setItem("vivid-progress", JSON.stringify(progress)),    [progress]);
 
   const value = useMemo<ViewerState>(() => ({
     coins, subscribed, subscriptionPlan, subscriptionEndsAt, savedIds, unlockedIds, progress, isAdmin, loading,

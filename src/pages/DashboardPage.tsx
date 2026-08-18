@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { logout as logoutApi } from "../api/auth";
+import { verifyPurchase } from "../api/monetization";
 import { useAuth } from "../hooks/useAuth";
 import { useViewer } from "../hooks/useViewer";
 
@@ -24,12 +25,27 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("success") === "true") {
-      toast.success("Payment successful! Your subscription is now active.");
-      viewer.refresh();
-      // Remove query params from URL without refreshing
+    const success = params.get("success") === "true";
+    const canceled = params.get("canceled") === "true";
+    const sessionId = params.get("session_id");
+
+    if (success) {
+      if (sessionId) {
+        verifyPurchase(sessionId)
+          .then((res) => {
+            viewer.refresh();
+            toast.success(`◉ ${res.data.data.coins_added} coins added to your wallet!`);
+          })
+          .catch(() => {
+            toast.error("Could not verify purchase. Contact support if coins are missing.");
+          });
+      } else {
+        toast.success("Payment successful! Your subscription is now active.");
+        viewer.refresh();
+      }
+
       window.history.replaceState({}, "", window.location.pathname);
-    } else if (params.get("canceled") === "true") {
+    } else if (canceled) {
       toast.error("Payment was canceled. You have not been charged.");
       window.history.replaceState({}, "", window.location.pathname);
     }
