@@ -25,7 +25,14 @@ export const createSubscription = (plan: string) =>
 
 export const cancelSubscription = () => api.delete("/api/v1/subscriptions");
 
+export const verifySubscription = (session_id: string) =>
+  api.post<{ data: { plan: string; status: string; active: boolean; ends_at?: string } }>(
+    "/api/v1/subscriptions/verify_subscription",
+    { session_id }
+  );
+
 export const getCoinBalance = () => api.get("/api/v1/coins");
+
 export const purchaseCoins = (pack: "small" | "medium" | "large") =>
   api.post<{
     data: {

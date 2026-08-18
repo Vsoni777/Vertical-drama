@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useViewer } from "../hooks/useViewer";
-import { purchaseCoins, createSubscription, cancelSubscription } from "../api/monetization";
+import {
+  purchaseCoins,
+  createSubscription,
+  cancelSubscription,
+  verifySubscription,
+} from "../api/monetization";
 
 export default function MembershipPage() {
   const viewer = useViewer();
@@ -10,13 +15,29 @@ export default function MembershipPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    const sessionId = searchParams.get("session_id");
+
     if (searchParams.get("canceled") === "true") {
       toast.error("Payment was canceled. You have not been charged.");
       setSearchParams(new URLSearchParams());
     } else if (searchParams.get("success") === "true") {
-      toast.success("Payment successful! Your subscription is now active.");
-      viewer.refresh();
-      setSearchParams(new URLSearchParams());
+      if (sessionId) {
+        verifySubscription(sessionId)
+          .then(() => {
+            viewer.refresh();
+            toast.success("Payment successful! Your subscription is now active.");
+          })
+          .catch(() => {
+            toast.error("Could not verify subscription. Please refresh or contact support.");
+          })
+          .finally(() => {
+            setSearchParams(new URLSearchParams());
+          });
+      } else {
+        toast.success("Payment successful! Your subscription is now active.");
+        viewer.refresh();
+        setSearchParams(new URLSearchParams());
+      }
     }
   }, [searchParams, setSearchParams, viewer]);
 
