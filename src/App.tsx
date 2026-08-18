@@ -13,7 +13,6 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import MembershipPage from "./pages/MembershipPage";
 import RewardsPage from "./pages/RewardsPage";
-import CoinSuccessPage from "./pages/CoinSuccessPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 export default function App() {
@@ -35,7 +34,6 @@ export default function App() {
           <Route path="watch/:seriesId/:episodeId" element={<PlayerPage />} />
           <Route path="membership"  element={<MembershipPage />} />
           <Route path="rewards"     element={<RewardsPage />} />
-          <Route path="coins/success" element={<CoinSuccessPage />} />
           <Route path="admin" element={<ProtectedRoutes roles={["admin"]}><AdminPage /></ProtectedRoutes>} />
         </Route>
 
